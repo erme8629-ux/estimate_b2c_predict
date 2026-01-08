@@ -1,0 +1,34 @@
+stages:
+    - build
+    - publish
+
+build:
+    stage: build
+    image: docker-group.aut.bz/python:3.9
+    script:
+        - pip install --upgrade pip poetry
+        - poetry version "${CI_COMMIT_TAG}"
+        - poetry build
+    artifacts:
+        paths:
+            - dist/
+    tags:
+      - docker
+    
+
+
+publish:
+    stage: publish
+    image: docker-group.aut.bz/python:3.9
+    script:
+        - pip install twine
+        - OUTPUT=$(twine upload --repository-url ${NEXUS_REPOSITORY_URL} dist/* -u ${NEXUS_USERNAME} -p ${NEXUS_PASSWORD} 2>&1) || (echo "$OUTPUT" | grep -q "400\|does not allow\|Repository does not allow" && echo "Package already exists" && exit 0) || (echo "$OUTPUT" && exit 1)
+    dependencies:
+        - build
+    tags:
+      - docker
+
+
+    
+
+    

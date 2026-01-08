@@ -1,0 +1,14 @@
+/.git/*
+/bin
+/src/test
+/src/api_test_data
+/dist
+.gitlab-ci.yml
+.gitignore
+.editorconfig
+.install
+.env
+Makefile
+docker-compose.yml
+README.md
+LICENSE

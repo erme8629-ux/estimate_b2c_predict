@@ -1,0 +1,25 @@
+FROM docker-group.aut.bz/python:3.9-slim
+
+LABEL org.label-schema.name="autobiz Python Image" \
+    org.label-schema.description="Python3.9-slim Image Customized for autobiz component" \
+    org.label-schema.url="" \
+    org.label-schema.vcs-url="" \
+    org.label-schema.maintainer="Hassen BEN SLIMENE <h.slimen@autobiz.com>" \
+    org.label-schema.schema-version="Python 3.9-slim"
+
+RUN pip install --upgrade pip setuptools wheel poetry build twine
+
+# Copy base image
+COPY etc/docker/python/image-root/ /
+
+# Create default user
+RUN groupadd --gid 1000 user \
+  && useradd --gid 1000 --home "/home/user" --uid 1000 user \
+  && mkdir -p /home/user \
+  && mkdir -p /home/user/.local /home/user/.cache
+
+USER user
+WORKDIR /src
+
+# Copy only specifically what we need
+COPY src src/

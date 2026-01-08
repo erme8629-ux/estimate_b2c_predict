@@ -1,0 +1,8 @@
+#!/bin/bash
+
+set -e
+
+export DOCKER_HOST
+
+exec docker compose run --rm -t -i python "$@"
+

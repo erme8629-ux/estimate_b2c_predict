@@ -1,0 +1,10 @@
+services:
+  python:
+    image: ${DOCKER_REGISTRY}/data-science/${PROJECT_NAME}:${IMAGE_TAG}
+    build:
+      context: .
+      dockerfile: ./etc/docker/python/Dockerfile
+    volumes:
+      - ${PWD}:/src
+      - ${PIP_CACHE_HOME}:/home/user/.cache
+      - ${LOCAL_HOME}:/home/user/.local
